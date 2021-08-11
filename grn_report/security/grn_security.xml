@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--Company wise restriction-->
+	<data noupdate="0">
+		<record id="grn_bill_comp_rule" model="ir.rule">
+	        <field name="name">GRN-Bill Report</field>
+	        <field name="model_id" ref="model_bill_grn_report"/>
+	        <field name="global" eval="True"/>
+	        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+	    </record>
+
+<!--ACL group-->
+	    <record id="group_bill_grn" model="res.groups">
+	        <field name="name">Bill-GRN</field>
+	    </record>
+	</data>
+  </odoo>

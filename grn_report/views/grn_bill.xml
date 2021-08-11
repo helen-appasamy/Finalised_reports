@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Pivot View of GRN Bill Report-->
+    <record id="pivot_bill_grn_report" model="ir.ui.view">
+        <field name="name">bill_grn_report_pivot</field>
+        <field name="model">bill.grn.report</field>
+        <field name="arch" type="xml">
+            <pivot string="GRN-Bill Validation Report" disable_linking="True">
+                <field name="state"/>
+                <field name="company_id"/>
+                <field name="partner_id"/>
+                <field name="purchase_order_id"/>
+                <field name="date_approve"/>
+                <field name="product_id"/>
+                <field name="product_uom_qty"/>
+                <field name="reference"/>
+                <field name="product_qty"/>
+                <field name="move_id"/>
+                <field name="quantity"/>
+            </pivot>
+        </field>
+    </record>
+
+<!--Tree view of GRN Bill Report-->
+    <record id="tree_bill_grn_report" model="ir.ui.view">
+        <field name="name">grn.bill.report.tree</field>
+        <field name="model">bill.grn.report</field>
+        <field name="arch" type="xml">
+            <tree string="GRN-Bill Validation Report" limit="80">
+                <field name="state"/>
+                <field name="company_id"/>
+                <field name="partner_id"/>
+                <field name="purchase_order_id"/>
+                <field name="date_approve"/>
+                <field name="product_id"/>
+                <field name="product_uom_qty"/>
+                <field name="reference"/>
+                <field name="product_qty"/>
+                <field name="move_id"/>
+                <field name="quantity"/>
+             </tree>
+        </field>
+    </record>-->
+
+<!-- Tree search view for bill GRN report -->
+    <record id="search_bill_grn_report" model="ir.ui.view">
+        <field name="name">bill.grn.report.search</field>
+        <field name="model">bill.grn.report</field>
+        <field name="arch" type="xml">
+            <search string="Search user">
+                <field name="purchase_order_id" filter_domain="[('purchase_order_id', 'ilike', self)]"/>
+                <field name="move_id" filter_domain="[('move_id', 'ilike', self)]"/>
+                <field name="reference" filter_domain="[('reference', 'ilike', self)]"/>
+                <filter string="This Week" name="thisweek" domain="[('date', '&gt;=', (context_today() + relativedelta(weeks=-1,days=1,weekday=0)).strftime('%Y-%m-%d')), ('date', '&lt;=', (context_today() + relativedelta(weekday=6)).strftime('%Y-%m-%d'))],"/>
+            </search>
+        </field>
+    </record>
+    
+<!--Action of GRN report-->
+	<record id="action_bill_grn_report" model="ir.actions.act_window">
+        <field name="name">GRN-Bill Validation Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bill.grn.report</field>
+        <field name="view_mode">tree,pivot</field>
+        <field name="context">{'search_default_thisweek': 1, 'active_test':False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Data Availabe
+            </p>
+        </field>
+    </record>
+
+<!--Menu creation-->
+    <menuitem
+        id="appasamy_reports"
+        name="Reports"
+        sequence="98"/>
+    <menuitem
+        id="appasamy_bill_grn_report"
+        name="GRN-Bill Validation Report"
+        parent="appasamy_reports"
+        sequence="2" action="action_bill_grn_report"
+        groups="group_bill_grn"/>
+ </odoo>
+
+
+
