@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pivot_user_access_report" model="ir.ui.view">
+      <field name="name">user.access.report.pivot</field>
+      <field name="model">user.access.view</field>
+      <field name="arch" type="xml">
+        <pivot string="User Access Report" disable_linking="True">
+          <field name="user_id"/>
+          <field name="login"/>
+          <field name="department_id"/>
+          <field name="parent_id"/>
+          <field name="address_id"/>
+          <field name="category_id"/>
+          <field name="group_id"/>
+        </pivot>
+      </field>
+    </record>
+<!-- Tree view of user access report-->
+    <record id="view_user_access_report" model="ir.ui.view">
+      <field name="name">user.access.report.view</field>
+      <field name="model">user.access.view</field>
+      <field name="arch" type="xml">
+        <tree string="User Access Report">
+          <field name="user_id"/>
+          <field name="login"/>
+          <field name="department_id"/>
+          <field name="parent_id"/>
+          <field name="address_id"/>
+          <field name="category_id"/>
+          <field name="group_id"/>
+        </tree>
+      </field>
+    </record>
+<!--Tree search view & default filter of user access report-->
+    <record id="search_view_user_access_report" model="ir.ui.view">
+      <field name="name">user.access.report.searchview</field>
+      <field name="model">user.access.view</field>
+      <field name="arch" type="xml">
+        <search string="Search user">
+          <field name="user_id" filter_domain="['|',('user_id', 'ilike', self), ('login', 'ilike', self)]"/>
+          <field name="group_id" filter_domain="[('group_id', 'ilike', self)]"/>
+          <separator />
+          <filter string="Internal" name="category_id" domain="['&amp;', ('category_id', '!=', False), ('category_id.name', '!=', 'Technical')]"/>
+        </search>
+      </field>
+    </record>
+
+<!-- Action of User Access Report-->
+    <record id="action_user_access_report" model="ir.actions.act_window">
+        <field name="name">User Access Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">user.access.view</field>
+        <field name="view_mode">tree,pivot</field>
+        <field name="context">{"search_default_category_id":1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              No Data Availabe
+            </p>
+        </field>
+    </record>
+
+<!--Group creation-->
+    <record id="user_report" model="res.groups">
+      <field name="name">User Report</field>
+      <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+<!--Menu creation-->
+    <menuitem
+            id="access_menu_root"
+            name="Access Rights"
+            sequence="99"
+            groups="base.group_system,base.group_erp_manager"/>
+   <menuitem
+            id="access_menu_config"
+            name="User Rights"
+            parent="access_menu_root"
+            sequence="25" 
+            groups="base.group_system"/>
+    <menuitem
+            id="user_access_view_id"
+            name="User Access Report"
+            parent="access_menu_config"
+            sequence="2" action="action_user_access_report" 
+            groups="base.group_system"/>
+ </odoo>
